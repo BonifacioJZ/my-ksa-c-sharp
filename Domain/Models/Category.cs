@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Models
 {
-    public class Category:BaseEntity
+    public class Category
     {
         [Key]
         [Column(TypeName ="id")]

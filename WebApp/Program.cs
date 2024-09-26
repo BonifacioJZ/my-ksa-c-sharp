@@ -5,8 +5,11 @@ using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 using Application.Service;
 using FluentValidation.AspNetCore;
 using Application.Validation;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Domain.Models;
+using Microsoft.AspNetCore.Identity;
 var builder = WebApplication.CreateBuilder(args);
-
+var connection = builder.Configuration.GetConnectionString("Test");
 // Add services to the container.
 builder.Services.AddControllersWithViews(
     opt=>opt.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes=true
@@ -20,10 +23,27 @@ builder.Services.AddControllers().AddFluentValidation(
 );
 //Injections  dependencies
 builder.Services.AddTransient<ICategoryService,CategoryService>();
+//Authentication cofiguration
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(opt=>{
+        opt.LoginPath = "/Login";
+        opt.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+    });
+//Add User Identity
+builder.Services.AddIdentity<User,IdentityRole>(
+    opt=>{
+        opt.Password.RequiredUniqueChars = 0;
+        opt.Password.RequiredLength = 8;
+        opt.Password.RequireNonAlphanumeric = false;
+        opt.Password.RequireUppercase = false;
+        opt.Password.RequireLowercase = false;
+    }
+)
+    .AddEntityFrameworkStores<Context>().AddDefaultTokenProviders();
 //Database Configuration
 builder.Services.AddDbContext<Context>(
     cfg => {
-        cfg.UseSqlite("Data Source=test.db", b=>
+        cfg.UseSqlite(connection, b=>
         b.MigrationsAssembly("Persistence"));
     }
 );
@@ -57,6 +77,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
