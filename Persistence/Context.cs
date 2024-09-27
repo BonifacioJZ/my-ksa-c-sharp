@@ -10,6 +10,10 @@ namespace Persistence
 {
     public class Context:IdentityDbContext<User>
     {
+        public Context()
+        {
+        }
+
         public Context(DbContextOptions options):base(options){
         }
         public DbSet<Category> categories {get;set;} 
