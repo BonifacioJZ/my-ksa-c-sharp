@@ -48,11 +48,13 @@ namespace WebApp.Controllers
             if(ModelState.IsValid){
                 var category_out = await this._categoryService.Create(category);
                 if(category_out ==null){
+                    TempData["Error_data"] ="El Intento de Registro no Valido";
                     return View(category);
                 }
                 TempData["Success_data"] = "La Categoria "+category_out.Name+ " se creo exitosamente";
                 return RedirectToAction(nameof(Index));
             }
+            TempData["Error_data"] ="El Intento de Registro no Valido";
             return View("new",category);
         }
 
@@ -89,12 +91,14 @@ namespace WebApp.Controllers
                     if(!this._categoryService.Exist(id)){
                         return NotFound();
                     }else{
+                        TempData["Error_data"] ="El Intento de Actualizacion no Valido";
                         throw ;
                     }
                 }
                 TempData["Success_data"]="La categoria se a actualizado correctamente";
                 return RedirectToAction(nameof(Index));
             }
+            TempData["Error_data"] ="El Intento de Actualizacion no Valido";
             return View("edit",category);
         }
 

@@ -4,6 +4,16 @@
 }
 
 <h1>@ViewData["Title"]</h1>
+@if(TempData["Error_data"]!= null){
+    <div class="m-0 pt-2 row justify-content-center align-items-center">
+        <div class="col-auto p-1 text-center">
+            <div class="alert alert-dismissible alert-danger">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                @TempData["Error_data"]
+            </div>
+        </div>
+    </div>
+    }
 <hr/>
 <div class="row">
     <div class="col-md-4">
