@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Application.Service;
 using Domain.Dto.Category;
 using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -13,7 +14,8 @@ using Persistence.Data;
 
 namespace WebApp.Controllers
 {
-        public class CategoryController : Controller
+    [Authorize]
+    public class CategoryController : Controller
     {
         private readonly ILogger<CategoryController> _logger;
         private readonly ICategoryService _categoryService;
