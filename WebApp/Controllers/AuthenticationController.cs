@@ -17,13 +17,9 @@ namespace WebApp.Controllers
     public class AuthenticationController : Controller
     {
         private readonly ILogger<AuthenticationController> _logger;
-        private readonly SignInManager<User> _signInManager;
-        private readonly UserManager<User> _userManager;
         private readonly IUserService _userService;
-        public AuthenticationController(ILogger<AuthenticationController> logger,IUserService userService,UserManager<User> _userManager, SignInManager<User> _signInManager)
+        public AuthenticationController(ILogger<AuthenticationController> logger,IUserService userService)
         {
-            this._signInManager = _signInManager;
-            this._userManager = _userManager;
             _userService = userService;
             _logger = logger;
         }
@@ -35,7 +31,7 @@ namespace WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([Bind("Username","Password","RememberMe")]LoginDto model){
             if(ModelState.IsValid){
-                var result = await _signInManager.PasswordSignInAsync(model.Username!,model.Password!,model.RememberMe,false);
+                var result = await _userService.LogIn(model);
                 if(result.Succeeded){
                     return RedirectToAction("Index","Home");
                 }
@@ -61,15 +57,10 @@ namespace WebApp.Controllers
                     ModelState.AddModelError("Email","El Correo electronico ya existe");
                     return View(model);
                 }
-                User user = new(){
-                    FirstName = model.FirstName,
-                    LastNAme = model.LastName,
-                    UserName = model.Username,
-                    Email = model.Email,
-                };
-                var result = await _userManager.CreateAsync(user,model.Password!);
+                
+                var result = await _userService.Register(model);
+
                 if(result.Succeeded){
-                    await _signInManager.SignInAsync(user,false);
                     return RedirectToAction("Index","Home");
                 }
                 foreach(var error in result.Errors){
@@ -80,8 +71,9 @@ namespace WebApp.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Logout(){
-            await _signInManager.SignOutAsync();
+        //CreateSuperUser
+        public  IActionResult Logout(){
+            _userService.LogOut();
             return RedirectToAction("Login","Authentication");
         }
 
