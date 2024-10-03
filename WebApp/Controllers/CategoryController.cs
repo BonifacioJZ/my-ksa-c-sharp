@@ -14,7 +14,7 @@ using Persistence.Data;
 
 namespace WebApp.Controllers
 {
-    [Authorize]
+    
     public class CategoryController : Controller
     {
         private readonly ILogger<CategoryController> _logger;

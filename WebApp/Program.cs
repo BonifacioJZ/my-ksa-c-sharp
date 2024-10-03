@@ -8,6 +8,7 @@ using Application.Validation;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Domain.Models;
 using Microsoft.AspNetCore.Identity;
+using WebApp.Filter;
 var builder = WebApplication.CreateBuilder(args);
 var connection = builder.Configuration.GetConnectionString("Test");
 // Add services to the container.
@@ -16,6 +17,10 @@ builder.Services.AddControllersWithViews(
 );
 //AutoMapper Configuration
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+//AddFilters
+builder.Services.AddControllersWithViews(opt=>{
+    opt.Filters.Add<VerifySession>();
+});
 //fluentValidation
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.AddControllers().AddFluentValidation(
@@ -30,6 +35,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         opt.LoginPath = "/Login";
         opt.ExpireTimeSpan = TimeSpan.FromMinutes(20);
     });
+builder.Services.AddSession();
+
 //Add User Identity
 builder.Services.AddIdentity<User,IdentityRole>(
     opt=>{
@@ -80,7 +87,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();
-
+app.UseSession();
 app.UseAuthorization();
 
 app.MapControllerRoute(
