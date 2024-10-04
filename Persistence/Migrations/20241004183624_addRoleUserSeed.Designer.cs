@@ -11,8 +11,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20240926181842_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241004183624_addRoleUserSeed")]
+    partial class addRoleUserSeed
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,6 +37,51 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("categories");
+                });
+
+            modelBuilder.Entity("Domain.Models.Role", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "87e55637-05ef-45e1-8eb9-d881cdefa88b",
+                            Description = "",
+                            Name = "Root",
+                            NormalizedName = "ROOT"
+                        },
+                        new
+                        {
+                            Id = "8d1348e5-a2c7-4a7a-8cb4-b7ccb2d2b9c9",
+                            Description = "",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Models.User", b =>
@@ -109,32 +154,26 @@ namespace Persistence.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex");
-
-                    b.ToTable("AspNetRoles", (string)null);
+                    b.HasData(
+                        new
+                        {
+                            Id = "6f41b021-3b66-484f-a673-7596f9c1aa07",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "dbd8a24a-cfbf-42ac-b0ab-0a464dbe4dc2",
+                            Email = "root@root.com",
+                            EmailConfirmed = false,
+                            FirstName = "Admin",
+                            LastNAme = "Root",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ROOT@ROOT.COM",
+                            NormalizedUserName = "ROOT",
+                            PasswordHash = "AQAAAAIAAYagAAAAELoNTINkSRn1/VjcXPbmHB9ok1iWYsu45WliJFtn2EQpRtWdCkdnaLGfGHsQQNsFvg==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "bb20e3a1-aad0-4741-ba3c-4df9f3dde267",
+                            TwoFactorEnabled = false,
+                            UserName = "root"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -218,6 +257,13 @@ namespace Persistence.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "6f41b021-3b66-484f-a673-7596f9c1aa07",
+                            RoleId = "87e55637-05ef-45e1-8eb9-d881cdefa88b"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -241,7 +287,7 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("Domain.Models.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -268,7 +314,7 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("Domain.Models.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)

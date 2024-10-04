@@ -38,7 +38,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddSession();
 
 //Add User Identity
-builder.Services.AddIdentity<User,IdentityRole>(
+builder.Services.AddIdentity<User,Role>(
     opt=>{
         opt.Password.RequiredUniqueChars = 0;
         opt.Password.RequiredLength = 8;
@@ -47,6 +47,7 @@ builder.Services.AddIdentity<User,IdentityRole>(
         opt.Password.RequireLowercase = false;
     }
 )
+    .AddRoles<Role>()
     .AddEntityFrameworkStores<Context>().AddDefaultTokenProviders();
 //Database Configuration
 builder.Services.AddDbContext<Context>(

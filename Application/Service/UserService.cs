@@ -30,6 +30,12 @@ namespace Application.Service
             return await _context.Users.Where(u=>u.UserName == Username).AnyAsync();
         }
 
+        public IQueryable<User> GetAll()
+        {
+            var users = _userManager.Users.Select(c=>c);
+            return users;
+        }
+
         public async Task<SignInResult> LogIn(LoginDto user)
         {
             var result =  await _signInManager.PasswordSignInAsync(user.Username!,user.Password!,user.RememberMe,false);
