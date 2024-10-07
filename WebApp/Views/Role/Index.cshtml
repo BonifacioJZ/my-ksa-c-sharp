@@ -1,12 +1,14 @@
 @using Domain.Models;
-@model Persistence.Data.Pagination<User>;
+@using Persistence.Data;
+@model Pagination<Role>;
 @{
-    ViewData["Title"] = "Usuarios";
+    ViewData["Title"] = "Roles";
     var previousWeakened = !Model.previousPages ? "disabled":"";
     var nextWeakened = !Model.nextPages ? "disabled":"";
 }
 
 <h1>@ViewData["Title"]</h1>
+
 @if(TempData["Success_data"]!= null){
     <div class="m-0 pt-2 row justify-content-center align-items-center">
         <div class="col-auto p-1 text-center">
@@ -18,40 +20,31 @@
     </div>
 }
 <p>
-    <a asp-action="Register" asp-controller="Users" class="btn btn-success">Registrar Nuevo Usuario</a>
+    <a asp-action="Register" asp-controller="Role" class="btn btn-success">Nuevo Rol</a>
 </p>
+
 <div class="table-responsive-md">
     <table class="table">
-        <thead class="table-light">
-            <th>
-                Nombre de usuario
-            </th>
-            <th>
-                Nombre
-            </th>
-            <th>
-                Correo Electronico
-            </th>
-            <th>
-                Acciones
-            </th>
-        </thead>
-        <tbody>
-            @foreach(var item in Model){
-                <tr>
-                    <th>@Html.DisplayFor(modelItem=>item.UserName)</th>
-                    <th>@Html.DisplayFor(modelItem=>item.FirstName)</th>
-                    <th>@Html.DisplayFor(modelItem=>item.Email)</th>
-                    <th>
-                        <div class="btn-group btn-group-sm">
-                            <a href="#" class="btn btn-primary btn-sm">Ver</a>
-                            <a href="#" class="btn btn-warning btn-sm">Editar</a>
-                            <a href="#" class="btn btn-danger btn-sm"  >Eliminar</a>
-                        </div>
-                    </th>
-                </tr>
-            }
-        </tbody>
+            <thead class="table-light">
+                <th>Nombre</th>
+                <th>Acciones</th>
+            </thead>
+            <tbody>
+                @foreach(var item in Model){
+                    <tr>
+                        <th>
+                            @Html.DisplayFor(modelItem=>item.Name)
+                        </th>
+                        <th>
+                            <div class="btn-group btn-group-sm">
+                                <a href="#" class="btn btn-primary btn-sm">Ver</a>
+                                <a href="#" class="btn btn-warning btn-sm">Editar</a>
+                                <a href="#" class="btn btn-danger btn-sm"  >Eliminar</a>
+                            </div>
+                        </th>
+                    </tr>
+                }
+            </tbody>
     </table>
     @if(Model.pageSize>0){
         <nav>

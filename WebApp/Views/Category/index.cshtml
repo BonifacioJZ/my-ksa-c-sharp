@@ -77,6 +77,13 @@
     </nav>
     }
 }else{
+    <form asp-controller="Category" asp-action="Index">
+        <p>
+            Buscar: <input type="text" name="search" value="@ViewData["FiltroActual"]" class="form-text"/>
+            <input type="submit" value="Buscar" class="btn btn-sm btn-dark"/>
+            <a asp-action="Index" class="btn btn-outline-info">Lista Completa</a>
+        </p>
+    </form>
     <div class="text-center">
         <h4 class="display-4">No Hay Categorias Registradas</h4>
         <a class="btn btn-primary" asp-controller="Category" asp-action="New">Nueva Categoria</a>

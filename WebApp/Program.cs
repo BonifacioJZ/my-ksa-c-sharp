@@ -29,6 +29,7 @@ builder.Services.AddControllers().AddFluentValidation(
 //Injections  dependencies
 builder.Services.AddTransient<ICategoryService,CategoryService>();
 builder.Services.AddTransient<IUserService,UserService>();
+builder.Services.AddTransient<IRoleServices,RoleService>();
 //Authentication cofiguration
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(opt=>{

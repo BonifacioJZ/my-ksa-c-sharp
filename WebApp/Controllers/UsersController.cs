@@ -5,8 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Service;
 using Domain.Dto.Authentication;
+using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Persistence.Data;
 
 namespace WebApp.Controllers
 {
@@ -22,8 +25,9 @@ namespace WebApp.Controllers
         }
 
 
-        public IActionResult Index(){
-            return View();
+        public async Task<IActionResult> Index(int? numPage){
+            var users = _userService.GetAll();
+            return View(await Pagination<User>.PaginationCreate(users.AsNoTracking(),numPage??1,10));
         }
         public IActionResult Register(){
             return View();
