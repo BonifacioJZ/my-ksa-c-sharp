@@ -10,6 +10,7 @@ namespace Domain.Dto.Role
     {
         [Required]
         [StringLength(maximumLength:150)]
+        [Display(Name="Nombre")]
         public string? Name {get; set;}
 
         public string? Description {get; set;}

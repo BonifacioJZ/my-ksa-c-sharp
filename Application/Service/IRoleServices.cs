@@ -2,12 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Domain.Dto.Role;
 using Domain.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Application.Service
 {
     public interface IRoleServices
     {
         IQueryable<Role> GetAll();
+        Task<IdentityResult> Save(RoleInDto roleIn);
+        Task<RoleDetails> Show(Guid id);
+        Task<RoleEditDto?> Found(Guid id);
     }
 }

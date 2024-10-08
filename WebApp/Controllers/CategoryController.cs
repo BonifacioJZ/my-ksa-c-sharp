@@ -51,7 +51,7 @@ namespace WebApp.Controllers
                 var category_out = await this._categoryService.Create(category);
                 if(category_out ==null){
                     TempData["Error_data"] ="El Intento de Registro no Valido";
-                    return View(category);
+                    return View("new",category);
                 }
                 TempData["Success_data"] = "La Categoria "+category_out.Name+ " se creo exitosamente";
                 return RedirectToAction(nameof(Index));
