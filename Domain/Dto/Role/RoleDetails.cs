@@ -8,6 +8,7 @@ namespace Domain.Dto.Role
 {
     public class RoleDetails
     {
+        public Guid Id { get; set; }
         [Display(Name ="Nombre")]
         public string? Name { get; set; }
         [Display(Name ="Descripcion")]

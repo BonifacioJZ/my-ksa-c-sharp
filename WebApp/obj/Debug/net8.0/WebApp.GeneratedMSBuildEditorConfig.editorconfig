@@ -50,6 +50,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[/home/bonifacio/Projects/Net/my-ksa/WebApp/Views/Role/delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUm9sZS9kZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [/home/bonifacio/Projects/Net/my-ksa/WebApp/Views/Role/edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUm9sZS9lZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

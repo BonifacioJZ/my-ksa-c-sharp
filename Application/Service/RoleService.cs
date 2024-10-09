@@ -19,6 +19,15 @@ namespace Application.Service
             _mapper = mapper;
         }
 
+        public async void Destroy(Guid id)
+        {
+            var role = await _roleManager.FindByIdAsync(id.ToString());
+            if(role != null){
+                await _roleManager.DeleteAsync(role);
+            }
+        
+        }
+
         public async Task<RoleEditDto?> Edit(Guid id)
         {
             var role = _mapper.Map<RoleEditDto>(await _roleManager.FindByIdAsync(id.ToString()));

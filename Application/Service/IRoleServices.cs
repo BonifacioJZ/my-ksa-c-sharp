@@ -16,5 +16,6 @@ namespace Application.Service
         Task<RoleEditDto?> Edit(Guid id);
         Task<IdentityResult?> Update(RoleEditDto role);
         bool Exist(Guid id);
+        void Destroy(Guid id);
     }
 }

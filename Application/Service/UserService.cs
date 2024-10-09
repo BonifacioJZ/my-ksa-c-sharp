@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Domain.Dto.Authentication;
+using Domain.Dto.User;
 using Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -14,11 +16,13 @@ namespace Application.Service
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly IMapper _mapper;
         private readonly Context _context;
-        public UserService(Context context, UserManager<User> userManager,SignInManager<User> signInManager){
+        public UserService(Context context,IMapper mapper, UserManager<User> userManager,SignInManager<User> signInManager){
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
+            _mapper = mapper;
         }
         public async Task<bool> ExistEmail(string Email)
         {
@@ -57,6 +61,12 @@ namespace Application.Service
             };
             var result = await _userManager.CreateAsync(newUser,user.Password!);
             return result;
+        }
+
+        public async Task<UserDetailsDto> Show(Guid id)
+        {
+            var user = _mapper.Map<UserDetailsDto>(await _userManager.FindByIdAsync(id.ToString()));
+            return user;
         }
     }
 }

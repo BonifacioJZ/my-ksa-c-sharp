@@ -67,6 +67,9 @@ namespace WebApp.Controllers
             return View(role);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Root")]
         public async Task<IActionResult> Update(Guid id, [Bind("Id","Name","Description")]RoleEditDto role){
             if(id != role.Id) return NotFound();
             
@@ -86,6 +89,21 @@ namespace WebApp.Controllers
 
             }
             return View("edit",role);
+        }
+        
+        public async Task<IActionResult> Delete(Guid id){
+            var role = await _roleService.Show(id);
+            if(role == null) return NotFound();
+
+            return View(role);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult Destroy(Guid id){
+            _roleService.Destroy(id);
+            TempData["Success_data"]="El Role se elimino correctamente";
+            return RedirectToAction(nameof(Index));
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
