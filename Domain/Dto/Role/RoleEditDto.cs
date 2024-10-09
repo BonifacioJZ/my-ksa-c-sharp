@@ -9,7 +9,7 @@ namespace Domain.Dto.Role
     public class RoleEditDto
     {
         [Required]
-        public Guid? Id {get;set;}
+        public Guid Id {get;set;}
         [Required]
         [MaxLength(150)]
         [Display(Name ="Nombre")]

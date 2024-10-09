@@ -53,13 +53,39 @@ namespace WebApp.Controllers
             }
             return View("new",roleIn);
         }
-
-        public async Task<IActionResult> show(Guid id){
+        [Authorize(Roles ="Root")]
+        public async Task<IActionResult> Show(Guid id){
             var role = await _roleService.Show(id);
             if(role ==null){
                 return NotFound();
             }
             return View(role);
+        }
+        public async Task<IActionResult> Edit(Guid id){
+            var role = await _roleService.Edit(id);
+            if(role == null) return NotFound();
+            return View(role);
+        }
+
+        public async Task<IActionResult> Update(Guid id, [Bind("Id","Name","Description")]RoleEditDto role){
+            if(id != role.Id) return NotFound();
+            
+            if(ModelState.IsValid){
+                try{
+                    await _roleService.Update(role);
+                }catch(DbUpdateConcurrencyException){
+                    if(!_roleService.Exist(id)){
+                        return NotFound();
+                    }else{
+                        TempData["Error_data"] ="El Intento de Actualizacion no Valido";
+                        throw ;
+                    }
+                }
+                TempData["Success_data"]="El Rol se a actualizado correctamente";
+                return RedirectToAction(nameof(Index));
+
+            }
+            return View("edit",role);
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

@@ -19,10 +19,15 @@ namespace Application.Service
             _mapper = mapper;
         }
 
-        public async Task<RoleEditDto?> Found(Guid id)
+        public async Task<RoleEditDto?> Edit(Guid id)
         {
             var role = _mapper.Map<RoleEditDto>(await _roleManager.FindByIdAsync(id.ToString()));
             return role;
+        }
+
+        public bool Exist(Guid id)
+        {
+            return (_roleManager.Roles?.Any(r=>r.Id==id.ToString())).GetValueOrDefault();
         }
 
         public IQueryable<Role> GetAll()
@@ -45,6 +50,18 @@ namespace Application.Service
         {
             var role = _mapper.Map<RoleDetails>(await _roleManager.FindByIdAsync(id.ToString()));
             return role;
+        }
+
+        public async Task<IdentityResult?> Update(RoleEditDto role)
+        {
+            var updateRole = new Role(){
+                Id = role.Id.ToString(),
+                Name = role.Name,
+                Description = role.Description,
+                NormalizedName = role.Name!.Normalize()
+            };
+            var result = await _roleManager.UpdateAsync(updateRole);
+            return result;
         }
     }
 }

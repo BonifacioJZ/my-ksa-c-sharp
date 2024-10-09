@@ -13,6 +13,8 @@ namespace Application.Service
         IQueryable<Role> GetAll();
         Task<IdentityResult> Save(RoleInDto roleIn);
         Task<RoleDetails> Show(Guid id);
-        Task<RoleEditDto?> Found(Guid id);
+        Task<RoleEditDto?> Edit(Guid id);
+        Task<IdentityResult?> Update(RoleEditDto role);
+        bool Exist(Guid id);
     }
 }
