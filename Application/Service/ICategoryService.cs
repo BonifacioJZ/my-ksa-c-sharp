@@ -6,8 +6,7 @@ using Domain.Dto.Category;
 using Domain.Models;
 using Persistence.Data;
 
-namespace Application.Service
-{
+namespace Application.Service;
         public interface ICategoryService
     {
         IQueryable<Category> GetAll(string search,string currentOrder);
@@ -18,4 +17,3 @@ namespace Application.Service
         bool Exist(Guid Id);
         void Destroy(Guid Id);
     }
-}

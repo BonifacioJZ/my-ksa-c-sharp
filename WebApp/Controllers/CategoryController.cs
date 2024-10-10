@@ -12,8 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Persistence.Data;
 
-namespace WebApp.Controllers
-{
+namespace WebApp.Controllers;
     
     public class CategoryController : Controller
     {
@@ -128,4 +127,3 @@ namespace WebApp.Controllers
             return View("Error!");
         }
     }
-}
