@@ -40,6 +40,11 @@
                 <input type="password" class="form-control" asp-for="ConfirmPassword">
                 <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
             </div>
+            <div class="mb-1">
+                @foreach(var role in Model.Roles){
+                    @Html.DisplayFor(ModelItem=>role.Name)
+                }
+            </div>
             <div class="row p-3">
                 <div class="btn-group ">
                     <input type="submit" class="btn btn-primary" value="Registrar">

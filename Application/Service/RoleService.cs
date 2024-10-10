@@ -45,6 +45,13 @@ namespace Application.Service
             return roles;
         }
 
+        public async Task<ICollection<RoleOutDto>> GetAllDto()
+        {
+            var roles = _mapper.Map<ICollection<RoleOutDto>>(await _roleManager.Roles
+                .Where(r=>r.Name!="Root").ToListAsync());
+            return roles;
+        }
+
         public async Task<IdentityResult> Save(RoleInDto roleIn)
         {
             var role = new Role(){

@@ -15,6 +15,8 @@ namespace Application.Mapper
             CreateMap<RoleDetails,Role>();
             CreateMap<RoleEditDto,Role>();
             CreateMap<Role,RoleEditDto>();
+            CreateMap<Role,RoleOutDto>();
+            CreateMap<RoleOutDto,Role>();
         }
     }
 }

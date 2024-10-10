@@ -8,14 +8,14 @@ namespace Domain.Dto.User
 {
     public class UserDetailsDto
     {
-        public Guid Id { get; }
+        public Guid Id { get; set; }
         [Display(Name = "Nombre")]
-        public string? FirstNAme { get; }
+        public string? FirstName { get; set;}
         [Display(Name ="Apellidos")]
-        public string? LastNAme { get;}
+        public string? LastName { get; set;}
         [Display(Name = "Nombre de Usuario")]
-        public string? UserName { get; }
+        public string? UserName { get; set;}
         [Display(Name ="Correo Electronico")]
-        public string? Email { get; }
+        public string? Email { get; set;}
     }
 }

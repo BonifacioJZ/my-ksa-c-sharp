@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Domain.Dto.Role;
 
 namespace Domain.Dto.Authentication
 {
@@ -35,6 +36,9 @@ namespace Domain.Dto.Authentication
         [Compare(nameof(Password))]
         [Display(Name ="Confirmar Contraseña")]
         public string? ConfirmPassword {get; set; }
+
+        [Required]
+        public ICollection<RoleOutDto>? Roles {get;set;} 
 
     }
 }

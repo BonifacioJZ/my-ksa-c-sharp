@@ -11,6 +11,7 @@ namespace Application.Service
     public interface IRoleServices
     {
         IQueryable<Role> GetAll();
+        Task<ICollection<RoleOutDto>> GetAllDto();
         Task<IdentityResult> Save(RoleInDto roleIn);
         Task<RoleDetails> Show(Guid id);
         Task<RoleEditDto?> Edit(Guid id);

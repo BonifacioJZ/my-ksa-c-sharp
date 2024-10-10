@@ -17,11 +17,12 @@ namespace WebApp.Controllers
     {
         private readonly ILogger<UsersController> _logger;
         private readonly IUserService _userService;
-
-        public UsersController(ILogger<UsersController> logger,IUserService userService)
+        private readonly IRoleServices _roleServices;
+        public UsersController(ILogger<UsersController> logger,IRoleServices roleServices,IUserService userService)
         {
             _logger = logger;
             _userService = userService;
+            _roleServices = roleServices;
         }
 
 
@@ -29,8 +30,10 @@ namespace WebApp.Controllers
             var users = _userService.GetAll();
             return View(await Pagination<User>.PaginationCreate(users.AsNoTracking(),numPage??1,10));
         }
-        public IActionResult Register(){
-            return View();
+        public async Task<IActionResult> Register(){
+            RegisterDto register = new RegisterDto();
+            register.Roles = await _roleServices.GetAllDto();
+            return View(register);
         }
 
         [HttpPost]
@@ -59,6 +62,12 @@ namespace WebApp.Controllers
             return View(model);
         }
 
+        
+        public async Task<IActionResult> Show(Guid id){
+            var user  = await _userService.Show(id);
+            if(user == null) return NotFound();
+            return View(user);
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
