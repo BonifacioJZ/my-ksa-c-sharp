@@ -5,10 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Domain.Dto.Role;
 
-namespace Domain.Dto.Authentication
+namespace Domain.ModelView.User
 {
-    
-    public class RegisterDto
+    public class RegisterModelView
     {
         [Required]
         [StringLength(maximumLength:150)]
@@ -38,7 +37,6 @@ namespace Domain.Dto.Authentication
         public string? ConfirmPassword {get; set; }
 
         [Required]
-        public string? Role {get; set;}
-
+        public ICollection<RoleOutDto>? Role {get;set;} 
     }
 }

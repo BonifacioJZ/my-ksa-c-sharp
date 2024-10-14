@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Application.Service;
 using Domain.Dto.Authentication;
 using Domain.Models;
+using Domain.ModelView.User;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -31,35 +32,39 @@ namespace WebApp.Controllers
             return View(await Pagination<User>.PaginationCreate(users.AsNoTracking(),numPage??1,10));
         }
         public async Task<IActionResult> Register(){
-            RegisterDto register = new RegisterDto();
-            register.Roles = await _roleServices.GetAllDto();
+            RegisterModelView register = new RegisterModelView();
+            register.Role = await _roleServices.GetAllDto();
             return View(register);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register([Bind("FirstName","LastName","Username","Email","Password","ConfirmPassword")]RegisterDto model){
+        public async Task<IActionResult> Register([Bind("FirstName","LastName","Username","Email","Password","ConfirmPassword","Role")]RegisterDto model){
             if(ModelState.IsValid){
-
+                if(model.Role=="Selecione un Rol"){
+                    ModelState.AddModelError("Role","Selecione un Rol");
+                    
+                    return View(await ConverterToRegisterModelView(model));
+                }
                 if(await _userService.ExistUserName(model.Username!)){
                     ModelState.AddModelError("Username","El Nombre de usuario ya existe");
-                    return View(model);
+                    return View(await ConverterToRegisterModelView(model));
                 }
                 if(await _userService.ExistEmail(model.Email!)){
                     ModelState.AddModelError("Email","El Correo electronico ya existe");
-                    return View(model);
+                    return View(await ConverterToRegisterModelView(model));
                 }
                 
                 var result = await _userService.Register(model);
 
                 if(result.Succeeded){
-                    return RedirectToAction("Index","Home");
+                    return RedirectToAction("Index","Users");
                 }
                 foreach(var error in result.Errors){
                     ModelState.AddModelError("",error.Description);
                 }
 
             }
-            return View(model);
+            return View(await ConverterToRegisterModelView(model));
         }
 
         
@@ -72,6 +77,17 @@ namespace WebApp.Controllers
         public IActionResult Error()
         {
             return View("Error!");
+        }
+
+        private async Task<RegisterModelView> ConverterToRegisterModelView(RegisterDto user){
+            RegisterModelView model = new RegisterModelView(){
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Username = user.Username,
+                Role = await _roleServices.GetAllDto(),
+            };
+            return model;
         }
     }
 }

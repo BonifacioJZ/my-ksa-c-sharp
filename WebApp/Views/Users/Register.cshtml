@@ -1,4 +1,4 @@
-@model Domain.Dto.Authentication.RegisterDto; 
+@model Domain.ModelView.User.RegisterModelView; 
 @{
     ViewData["Title"] = "Registro";
 }
@@ -40,10 +40,14 @@
                 <input type="password" class="form-control" asp-for="ConfirmPassword">
                 <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
             </div>
-            <div class="mb-1">
-                @foreach(var role in Model.Roles){
-                    @Html.DisplayFor(ModelItem=>role.Name)
-                }
+            <div class="mb-1 pt-1">
+                <label asp-for="Role"></label>
+                <select name="Role" class="form-select form-select-lg mb-3" required aria-label="Large select example">
+                    @foreach(var role in Model.Role){
+                        <option  value="@role.Name">@Html.DisplayFor(ModelItem=>role.Name)</option>
+                    }
+                </select>
+                <span class="text-danger" asp-validation-for="Role"></span>
             </div>
             <div class="row p-3">
                 <div class="btn-group ">

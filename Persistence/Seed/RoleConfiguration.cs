@@ -24,6 +24,12 @@ namespace Persistence.Seed
                     Name = "Admin",
                     NormalizedName = "ADMIN",
                     Description=""
+                },
+                new Role{
+                    Id = Guid.NewGuid().ToString(),
+                    Name = "User",
+                    NormalizedName="User",
+                    Description=""
                 }
             );
         }

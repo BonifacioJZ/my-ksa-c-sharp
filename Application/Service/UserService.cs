@@ -19,6 +19,7 @@ public class UserService : IUserService
 {
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;
+    private readonly IRoleServices _roleServices;
     private readonly IMapper _mapper;
     private readonly Context _context;
 
@@ -29,12 +30,13 @@ public class UserService : IUserService
     /// <param name="mapper">El objeto <see cref="IMapper"/> para mapear entre entidades y DTOs.</param>
     /// <param name="userManager">El administrador de usuarios para realizar operaciones relacionadas con los usuarios.</param>
     /// <param name="signInManager">El administrador de inicio de sesión para realizar operaciones relacionadas con la autenticación de usuarios.</param>
-    public UserService(Context context, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager)
+    public UserService(Context context, IMapper mapper, UserManager<User> userManager, IRoleServices roleServices,SignInManager<User> signInManager)
     {
         _context = context;
         _userManager = userManager;
         _signInManager = signInManager;
         _mapper = mapper;
+        _roleServices = roleServices;
     }
 
     /// <summary>
@@ -101,6 +103,8 @@ public class UserService : IUserService
             Email = user.Email,
         };
         var result = await _userManager.CreateAsync(newUser, user.Password!);
+        if(!result.Succeeded) return result;
+        result = await _userManager.AddToRoleAsync(newUser,user.Role);
         return result;
     }
 
