@@ -73,6 +73,11 @@ namespace WebApp.Controllers
             if(user == null) return NotFound();
             return View(user);
         }
+        public async Task<IActionResult> Edit(Guid id){
+            var user = await _userService.Found(id);
+            if(user==null) return NotFound();
+            return View(user);
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

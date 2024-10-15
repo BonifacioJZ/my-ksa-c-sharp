@@ -59,6 +59,12 @@ public class UserService : IUserService
         return await _context.Users.Where(u => u.UserName == Username).AnyAsync();
     }
 
+    public async Task<UserEditDto> Found(Guid id)
+    {
+        var user = _mapper.Map<UserEditDto>(await _userManager.FindByIdAsync(id.ToString()));
+        return user;
+    }
+
     /// <summary>
     /// Obtiene todos los usuarios.
     /// </summary>
@@ -67,6 +73,12 @@ public class UserService : IUserService
     {
         var users = _userManager.Users.Select(c => c);
         return users;
+    }
+
+    public async Task<IList<string>> GetRoleByUser(User user)
+    {
+        var role = await _userManager.GetRolesAsync(user);
+        return role;
     }
 
     /// <summary>
@@ -115,8 +127,10 @@ public class UserService : IUserService
     /// <returns>Un objeto <see cref="UserDetailsDto"/> con los detalles del usuario.</returns>
     public async Task<UserDetailsDto> Show(Guid id)
     {
-        var user = _mapper.Map<UserDetailsDto>(await _userManager.FindByIdAsync(id.ToString()));
-        return user;
+        var user = await _userManager.FindByIdAsync(id.ToString());
+        var userDetails = _mapper.Map<UserDetailsDto>(user);
+        userDetails.Role = await GetRoleByUser(user);
+        return userDetails;
     }
 }
 

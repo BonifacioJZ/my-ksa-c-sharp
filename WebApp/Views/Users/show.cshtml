@@ -22,6 +22,14 @@
                 @Html.DisplayFor(modelItem=>Model.Email)
             </dd>
         </dl>
+        <dl class="row">
+            <dt class="col-sm-6">
+                @Html.DisplayNameFor(ModelItem=>Model.Role)
+            </dt>
+            <dd class="col-sm-6">
+                @String.Join("",Model.Role.ToList())
+            </dd>
+        </dl>
     </div>
 </div>
 <br/>

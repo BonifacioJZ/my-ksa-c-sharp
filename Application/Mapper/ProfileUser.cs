@@ -13,6 +13,8 @@ namespace Application.Mapper
         public ProfileUser(){
             CreateMap<User,UserDetailsDto>();
             CreateMap<UserDetailsDto,User>();
+            CreateMap<UserEditDto,User>();
+            CreateMap<User,UserEditDto>();
         }
     }
 }

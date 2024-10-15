@@ -18,5 +18,7 @@ namespace Application.Service
         IQueryable<User> GetAll();
         void LogOut();
         Task<UserDetailsDto> Show(Guid id);
+        Task<UserEditDto> Found(Guid id);
+        Task<IList<string>> GetRoleByUser(User user);
     }
 }

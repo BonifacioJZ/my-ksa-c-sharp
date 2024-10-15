@@ -17,5 +17,6 @@ namespace Domain.Dto.User
         public string? UserName { get; set;}
         [Display(Name ="Correo Electronico")]
         public string? Email { get; set;}
+        public IList<string>? Role {get; set;}
     }
 }
